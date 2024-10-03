@@ -84,4 +84,5 @@ int main(void)
 	samoise(a ,n);
 	affiche(a,n);
 	free_(a,n);
+	return 0
 }
