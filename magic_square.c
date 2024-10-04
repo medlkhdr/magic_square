@@ -23,7 +23,12 @@ void affiche(int **a , int n )
 			printf("%d ||",a[i][j]);
 		}
 		
-		printf("\n***************************************************\n");
+		printf("\n");
+		for(int k=0;k< n;k++)
+		{
+			printf("+++++");
+		}
+		printf("\n");
 	}
 }
 void free_(int **a, int n  )
@@ -44,11 +49,8 @@ void samoise(int **ar , int n  )
 	j = n / 2;
 	int k = n*n; 
 	ar[i][j]  = 1;
-	int f , h ;
 	while(counter <= k)
 	{
-		f = i ; 
-		h  =  j ;
 		i--;
 		j++;
 		if(i < 0 && (j >= 0 && j < n))
@@ -67,11 +69,14 @@ void samoise(int **ar , int n  )
 	}
 
 }
-#include<stdio.h>
 int main(void)
 {
 	int **a ;
-		int  n=  7;
+	int n ; 
+	printf("please enter the odd number :\n");
+	do{
+		scanf("%d", &n);
+	}while(n % 2 == 0);
 
 	a = (int **)malloc(sizeof(int*)*n);
 	for(int i = 0 ; i< n ; i ++)
@@ -81,8 +86,10 @@ int main(void)
 
 
 	matrice_nulle(a,n);
+	affiche(a,n);
+	printf("\n\n\n\n");
 	samoise(a ,n);
 	affiche(a,n);
 	free_(a,n);
-	return 0
+	return 0;
 }
