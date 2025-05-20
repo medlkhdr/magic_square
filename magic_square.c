@@ -1,95 +1,67 @@
-#include<stdlib.h>
-#include<stdio.h>
-void matrice_nulle(int **a , int  n )
+#include <stdio.h>
+#include <stdlib.h>
+
+int **create_zero_matrix(int n)
 {
-	
-
-	for(int i = 0 ; i< n ; i++)
-	{
-		for(int j = 0 ; j < n ; j++)
-		{
-			a[i][j] = 0 ;
-		}
-	} 
-
+    int **matrix = malloc(n * sizeof(int *));
+    for (int i = 0; i < n; i++)
+        matrix[i] = calloc(n, sizeof(int));
+    return matrix;
 }
-void affiche(int **a , int n )
+
+void print_matrix(int **matrix, int n)
 {
-
-	for(int i = 0 ; i< n; i++)
-	{
-		for(int j = 0  ; j< n; j++)
-		{
-			printf("%d ||",a[i][j]);
-		}
-		
-		printf("\n");
-		for(int k=0;k< n;k++)
-		{
-			printf("+++++");
-		}
-		printf("\n");
-	}
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+            printf("%3d ", matrix[i][j]);
+        printf("\n");
+    }
 }
-void free_(int **a, int n  )
+
+void free_matrix(int **matrix, int n)
 {
-	for(int i =  0 ; i < n ;i++)
-	{
-		free(a[i]);
-	}
-	free(a);
+    for (int i = 0; i < n; i++)
+        free(matrix[i]);
+    free(matrix);
 }
 
-void samoise(int **ar , int n  )
-{ 
-	int i = 0 ; 
-	int  j = 0 ; 
-	int counter = 2 ;
-	i =  0 ; 
-	j = n / 2;
-	int k = n*n; 
-	ar[i][j]  = 1;
-	while(counter <= k)
-	{
-		i--;
-		j++;
-		if(i < 0 && (j >= 0 && j < n))
-		{
-			i = n -1 ;
-		}else if(j >= n && (i >= 0 && i < n))
-		{
-			j = 0 ;
-		}else if((i < 0 && j >= n) || ar[i][j])
-		{
-			i+=2;
-			j--;
-		}
-		ar[i][j] = counter ; 
-		counter++ ; 	
-	}
-
-}
-int main(void)
+void fill_magic_square(int **matrix, int n)
 {
-	int **a ;
-	int n ; 
-	printf("please enter the odd number :\n");
-	do{
-		scanf("%d", &n);
-	}while(n % 2 == 0);
+    int num = 1;
+    int i = 0, j = n / 2;
 
-	a = (int **)malloc(sizeof(int*)*n);
-	for(int i = 0 ; i< n ; i ++)
-	{
-		a[i] = malloc(sizeof(int )*n);
-	}
-
-
-	matrice_nulle(a,n);
-	affiche(a,n);
-	printf("\n\n\n\n");
-	samoise(a ,n);
-	affiche(a,n);
-	free_(a,n);
-	return 0;
+    while (num <= n * n) {
+        matrix[i][j] = num++;
+        int new_i = (i - 1 + n) % n;
+        int new_j = (j + 1) % n;
+        if (matrix[new_i][new_j])
+            i = (i + 1) % n;
+	else
+	 {
+            i = new_i;
+            j = new_j;
+        }
+    }
 }
+
+int main()
+{
+    int n;
+
+    do
+    {
+        printf("Enter an odd number for the magic square size: ");
+        scanf("%d", &n);
+    } while (n % 2 == 0);
+
+    int **magic_square = create_zero_matrix(n);
+    fill_magic_square(magic_square, n);
+
+    printf("\nMagic Square of order %d:\n", n);
+    print_matrix(magic_square, n);
+
+    free_matrix(magic_square, n);
+    return 0;
+}
+
